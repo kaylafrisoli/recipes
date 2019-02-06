@@ -15,13 +15,24 @@ recipe_data <- recipes %>%
 
 shinyServer(function(input, output, session) {
   
-  output$the_data <- renderDataTable({
+  output$the_data <- DT::renderDataTable({
     
-    datatable(recipe_data, rownames = FALSE,
+    DT::datatable(recipe_data, rownames = FALSE,
               escape = FALSE,
               selection = "none",
-              options = list(pageLength = 6)) %>% formatStyle(columns = c( 2), width=c('290px'))
+              options = list(pageLength = 6)) %>%
+      formatStyle(columns = c(2), width='290px') %>%
+      formatStyle(columns = c(1), width='90px')
+                             
+                             # ,
+                             # autoWidth = TRUE,
+                             # columnDefs = list(list(targets=c(1), visible=TRUE, width='145'),
+                             #                   list(targets=c(2), visible=TRUE, width='105'),
+                             #                   list(targets=c(3), visible=TRUE, width='100'),
+                             #                   list(targets=c(4), visible=TRUE, width='100'),
+                             #                   list(targets='_all', visible=FALSE)),
+                             # processing=FALSE))
+
 
   })
-
 })
