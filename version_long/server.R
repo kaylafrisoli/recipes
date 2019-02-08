@@ -2,7 +2,12 @@ library(shiny)
 # library(googlesheets)
 library(DT)
 library(tidyverse)
-recipes <- read_csv("../recipes.csv")
+
+if("recipes.csv" %in% list.files()){
+  recipes <- read_csv("recipes.csv")
+} else{
+  recipes <- read_csv("../recipes.csv")
+}
 
 recipe_data <- recipes %>%
   mutate(Title =  ifelse((link_type == "web" & !is.na(link_type)),

@@ -20,7 +20,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(recipe_data, rownames = FALSE,
               escape = FALSE,
               selection = "none",
-              options = list(pageLength = 6)) %>%
+              options = list(pageLength = 5)) %>%
       formatStyle(columns = c(2), width='290px') %>%
       formatStyle(columns = c(1), width='90px')
                              
