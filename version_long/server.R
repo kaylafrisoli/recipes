@@ -2,7 +2,7 @@ library(shiny)
 # library(googlesheets)
 library(DT)
 library(tidyverse)
-recipes <- read_csv("recipes.csv")
+recipes <- read_csv("../recipes.csv")
 
 recipe_data <- recipes %>%
   mutate(Title =  ifelse((link_type == "web" & !is.na(link_type)),
@@ -20,7 +20,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(recipe_data, rownames = FALSE,
               escape = FALSE,
               selection = "none",
-              options = list(pageLength = 6)) %>%
+              options = list(pageLength = 10)) %>%
       formatStyle(columns = c(2), width='290px') %>%
       formatStyle(columns = c(1), width='90px')
                              
