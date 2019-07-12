@@ -9,8 +9,8 @@ recipe_data <- recipes %>%
                          paste0('<a target=_blank href=', Link, '>', Title,'</a>' ),
                          Title),
          Date = as.Date(Date, "%m/%d/%y")) %>%
-  select(-c(Link, link_type)) %>%
-  arrange(desc(Date))
+  arrange(desc(Date)) %>% #remove date
+  select(-c(Link, link_type, Date))
 
 
 shinyServer(function(input, output, session) {
@@ -21,8 +21,8 @@ shinyServer(function(input, output, session) {
               escape = FALSE,
               selection = "none",
               options = list(pageLength = 5)) %>%
-      formatStyle(columns = c(2), width='290px') %>%
-      formatStyle(columns = c(1), width='90px')
+      formatStyle(columns = c(1), width='290px') %>%
+      formatStyle(columns = c(2), width='90px')
                              
                              # ,
                              # autoWidth = TRUE,
