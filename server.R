@@ -4,20 +4,44 @@ library(DT)
 library(tidyverse)
 recipes <- read_csv("recipes.csv")
 
+chron <- FALSE
+
+# makeReactiveBinding("seed")
+
+
 recipe_data <- recipes %>%
   mutate(Title =  ifelse((link_type == "web" & !is.na(link_type)),
                          paste0('<a target=_blank href=', Link, '>', Title,'</a>' ),
                          Title),
-         Date = as.Date(Date, "%m/%d/%y")) %>%
-  arrange(desc(Date)) %>% #remove date
-  select(-c(Link, link_type, Date))
+         Date = as.Date(Date, "%m/%d/%y"))
+
+
 
 
 shinyServer(function(input, output, session) {
   
+  GetData <- function(in_data, seed){
+    set.seed(seed)
+    
+    if(chron){
+      out_data <- in_data %>%
+        arrange(desc(Date)) %>% #remove date
+        select(-c(Link, link_type, Date))
+    } else {
+      out_data <- in_data %>%
+        slice(sample(n())) %>%
+        select(-c(Link, link_type, Date))
+    }
+    return(out_data)
+  }
+  
+  # r <- reactiveVal()
+  # r(Sys.time())
+  # set.seed(r())
+  
   output$the_data <- DT::renderDataTable({
     
-    DT::datatable(recipe_data, rownames = FALSE,
+    DT::datatable(GetData(recipe_data, Sys.time()), rownames = FALSE,
               escape = FALSE,
               selection = "none",
               options = list(pageLength = 5)) %>%
